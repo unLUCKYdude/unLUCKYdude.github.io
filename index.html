@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>ИЗ #1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Sans";
+        }
+        body {
+            background-color: #d2dae2;
+            padding: 72px 24px 72px 72px;
+        }
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: #485460;
+        }
+        b {
+            margin-left: 12px;
+        }
+        .item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .item + .item {
+            margin-top: 36px;
+        }
+        .item > div {
+            transition: 0.3s;
+            overflow: hidden;
+            max-height: 0;
+            border-left: 4px solid #485460;
+            padding-left: 36px;
+            margin-left: 16px;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        table td {
+            width: 50px;
+            height: 50px;
+            box-sizing: border-box;
+            text-align: center;
+            line-height: 50px;
+            border: 1px solid black;
+            font-size: 18px;
+            color: #1e272e;
+        }
+        .row {
+            display: flex;
+            gap: 72px;
+            margin: 24px 0;
+        }
+        .text {
+            font-size: 18px;
+            color: #1e272e;
+        }
+        .xD {
+            display: none;
+        }
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1e272e;
+            cursor: pointer;
+            margin-bottom: 24px;
+            margin-left: 48px;
+            user-select: none;
+        }
+        .title::before {
+            content: url("https://unpkg.com/ionicons@5.5.2/dist/svg/chevron-down-outline.svg");
+            width: 36px;
+            height: 36px;
+            position: absolute;
+            transition: 0.3s;
+            transform: translate(-48px, 8px);
+        }
+        .active::before {
+            transform: translate(-48px, 8px) rotate(180deg);
+        }
+        #cezarTable {
+            margin-top: 24px;
+        }
+        #cezarTable td {
+            width: 32px;
+            height: 32px;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 32px;
+        }
+        .input {
+            width: 400px;
+            padding: 8px 16px;
+            background-color: #485460;
+            border-radius: 12px;
+            outline: none;
+            border: none;
+            text-align: center;
+            color: #ffffff;
+            font-size: 16px;
+            text-transform: uppercase;
+            box-sizing: border-box;
+            border: 4px solid transparent;
+            transition: 0.3s;
+        }
+        .label {
+            margin-bottom: 8px;
+            border-radius: 24px;
+            width: fit-content;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        img {
+            width: 40px;
+            height: 40px;
+            margin: 0 48px;
+        }
+        textarea {
+            resize: none;
+            background-color: #485460;
+            outline: none;
+            border: none;
+            border-radius: 12px;
+            width: 400px;
+            padding: 12px 16px;
+            color: #ffffff;
+            height: 132px;
+            font-size: 16px;
+            border: 4px solid transparent;
+            box-sizing: border-box;
+            transition: 0.3s;
+        }
+        .mode {
+            padding: 10px 16px;
+            border-radius: 20px;
+            background-color: #1e272e;
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 16px;
+            user-select: none;
+            cursor: pointer;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        }
+        #mode {
+            display: none;
+        }
+        #mode:checked + label {
+            background-color: #ffffff;
+            color: #1e272e;
+        }
+        .enabled {
+            background-color: #ffffff;
+            border-color: #485460;
+            color: #1e272e;
+            font-weight: bold;
+        }
+        button {
+            outline: none;
+            border: none;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            margin-top: 36px;
+            margin-bottom: 16px;
+            width: 180px;
+            height: 60px;
+            font-weight: bold;
+            font-size: 22px;
+            color: #1e272e;
+            line-height: 60px;
+            text-align: center;
+            border-radius: 24px;
+            margin-left: calc(50% - 90px);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background-color: #d2dae2;
+        }
+        button:active {
+            box-shadow: none;
+            background-color: #485460;
+            color: #ffffff;
+        }
+        .mt {
+            margin-top: 24px;
+        }
+        .math {
+            padding: 6px 12px;
+            border-radius: 16px;
+            background-color: #485460;
+            color: #ffffff;
+            font-weight: bold;
+            box-sizing: border-box;
+            margin: 0 4px;
+        }
+        .wrapper {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            color: #1e272e;
+        }
+        .t td {
+            line-height: unset;
+            width: 34px;
+            height: 34px;
+            font-size: 16px;
+        }
+        .t td:first-child {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="item">
+        <p class="title">Применение магических квадратов</p>
+        <input type="checkbox" class="xD">
+        <div>
+            <p class="text">Открытый текст:<b>ЧАПЛИЙ ВЛАДИСЛАВ АЛЕКСЕЕВИЧ</b></p>
+            <div class="row">
+                <table>
+                    <tr>
+                        <td>11</td>
+                        <td>24</td>
+                        <td>7</td>
+                        <td>20</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>12</td>
+                        <td>25</td>
+                        <td>8</td>
+                        <td>16</td>
+                    </tr>
+                    <tr>
+                        <td>17</td>
+                        <td>5</td>
+                        <td>13</td>
+                        <td>21</td>
+                        <td>9</td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>18</td>
+                        <td>1</td>
+                        <td>14</td>
+                        <td>22</td>
+                    </tr>
+                    <tr>
+                        <td>23</td>
+                        <td>6</td>
+                        <td>19</td>
+                        <td>2</td>
+                        <td>15</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>И</td>
+                        <td>И</td>
+                        <td>В</td>
+                        <td>С</td>
+                        <td>П</td>
+                    </tr>
+                    <tr>
+                        <td>Л</td>
+                        <td>С</td>
+                        <td>Ч</td>
+                        <td>Л</td>
+                        <td>А</td>
+                    </tr>
+                    <tr>
+                        <td>Л</td>
+                        <td>И</td>
+                        <td>Л</td>
+                        <td>Е</td>
+                        <td>А</td>
+                    </tr>
+                    <tr>
+                        <td>Д</td>
+                        <td>Е</td>
+                        <td>Ч</td>
+                        <td>А</td>
+                        <td>Е</td>
+                    </tr>
+                    <tr>
+                        <td>В</td>
+                        <td>Й</td>
+                        <td>К</td>
+                        <td>А</td>
+                        <td>В</td>
+                    </tr>
+                </table>
+            </div>
+            <p class="text">Шифртекст:<b>ИИВСП ЛСЧЛА ЛИЛЕА ДЕЧАЕ ВЙКАВ</b></p>
+        </div>
+    </div>
+    <div class="item">
+        <p class="title">Шифр «двойной квадрат» Уитстона</p>
+        <input type="checkbox" class="xD">
+        <div>
+            <p class="text">Открытый текст:<b>ЧАПЛИЙ ВЛАДИСЛАВ АЛЕКСЕЕВИЧ</b></p>
+            <div class="row">
+                <table>
+                    <tr>
+                        <td>Ж</td>
+                        <td>Щ</td>
+                        <td>Н</td>
+                        <td>Ю</td>
+                        <td>Р</td>
+                    </tr>
+                    <tr>
+                        <td>И</td>
+                        <td>Т</td>
+                        <td>Ь</td>
+                        <td>Ц</td>
+                        <td>Б</td>
+                    </tr>
+                    <tr>
+                        <td>Я</td>
+                        <td>М</td>
+                        <td>Е</td>
+                        <td>.</td>
+                        <td>С</td>
+                    </tr>
+                    <tr>
+                        <td>В</td>
+                        <td>Ы</td>
+                        <td>П</td>
+                        <td>Ч</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Й</td>
+                        <td>Д</td>
+                        <td>У</td>
+                        <td>О</td>
+                        <td>К</td>
+                    </tr>
+                    <tr>
+                        <td>З</td>
+                        <td>Э</td>
+                        <td>Ф</td>
+                        <td>Г</td>
+                        <td>Ш</td>
+                    </tr>
+                    <tr>
+                        <td>Х</td>
+                        <td>А</td>
+                        <td>,</td>
+                        <td>Л</td>
+                        <td>Ъ</td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td>И</td>
+                        <td>Ч</td>
+                        <td>Г</td>
+                        <td>Я</td>
+                        <td>Т</td>
+                    </tr>
+                    <tr>
+                        <td>,</td>
+                        <td>Ж</td>
+                        <td>Ь</td>
+                        <td>М</td>
+                        <td>О</td>
+                    </tr>
+                    <tr>
+                        <td>З</td>
+                        <td>Ю</td>
+                        <td>Р</td>
+                        <td>В</td>
+                        <td>Щ</td>
+                    </tr>
+                    <tr>
+                        <td>Ц</td>
+                        <td>Й</td>
+                        <td>П</td>
+                        <td>Е</td>
+                        <td>Л</td>
+                    </tr>
+                    <tr>
+                        <td>Ъ</td>
+                        <td>А</td>
+                        <td>Н</td>
+                        <td>.</td>
+                        <td>Х</td>
+                    </tr>
+                    <tr>
+                        <td>Э</td>
+                        <td>К</td>
+                        <td>С</td>
+                        <td>Ш</td>
+                        <td>Д</td>
+                    </tr>
+                    <tr>
+                        <td>Б</td>
+                        <td>Ф</td>
+                        <td>У</td>
+                        <td>Ы</td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+            <p class="text">Шифртекст:<b>ЙО ПЖВЕСФОЪЩЩ ЫМЙКЫЧНШВПЦЖЛЛ</b></p>
+        </div>
+    </div>
+    <div class="item">
+        <p class="title">Система Цезаря с ключевым словом</p>
+        <input type="checkbox" class="xD">
+        <div>
+            <div style="display: flex; align-items: center;">
+                <div>
+                    <p class="label">Ключевая фраза</p>
+                    <input type="text" class="input enabled" id="phraseInput" value="Система Цезаря с ключевым словом">
+                </div>
+                <img src="https://unpkg.com/ionicons@5.5.2/dist/svg/arrow-forward-outline.svg">
+                <div>
+                    <p class="label">Ключ</p>
+                    <input type="text" class="input" disabled id="keyInput">
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column; align-items: flex-end; margin-left: 16px;">
+                    <p class="label" style="transform: translateX(-15px);">Позиция</p>
+                    <input type="text" class="input enabled" id="posInput" style="width: 82px;" maxlength="2" value="24">
+                </div>
+            </div>
+            <div style="display: flex; align-items: center; margin-top: 16px; justify-content: space-between;">
+                <div>
+                    <p class="label">Открытый текст</p>
+                    <textarea id="unencrypted" class="enabled">ЧАПЛИЙ ВЛАДИСЛАВ АЛЕКСЕЕВИЧ</textarea>
+                </div>
+                <div>
+                    <input type="checkbox" id="mode">
+                    <label class="mode" for="mode">Шифровка</label>
+                </div>
+                <div>
+                    <p class="label">Шифртекст</p>
+                    <textarea id="encrypted" disabled></textarea>
+                </div>
+            </div>
+            <table id="cezarTable"></table>
+            <button id="execButton">Выполнить</button>
+        </div>
+    </div>
+    <div class="item">
+        <p class="title">Система генерации шифра Диффи-Хеллмана</p>
+        <input type="checkbox" class="xD">
+        <div>
+            <p class="wrapper"><span class="math">q = 38039</span><b style="margin-right: 12px;">⇒</b><span class="math">p = 2 * q + 1 = 76079</span></p>
+            <p class="wrapper mt">Выберем <span class="math">g = 11</span>, т.к. <span class="math">1 &#60; 11 &#60; 76078</span> и <span class="math">g<sup>q</sup> mod p = 11<sup>38039</sup> mod 76079 = 76078 ≠ 1</span></p>
+            <p class="wrapper mt">Пусть <span class="math">X<sub>A</sub> = 12345</span> и <span class="math">X<sub>B</sub> = 54321</span></p>
+            <p class="wrapper mt"><span class="math">Y<sub>A</sub> = g<sup>X<sub>A</sub></sup> mod p = 11<sup>12345</sup> mod 76079 = 62349</span></p>
+            <p class="wrapper mt"><span class="math">Y<sub>B</sub> = g<sup>X<sub>B</sub></sup> mod p = 11<sup>54321</sup> mod 76079 = 65267</span></p>
+            <p class="wrapper mt"><span class="math">Z<sub>AB</sub> = (Y<sub>B</sub>)<sup>X<sub>A</sub></sup> mod p = 65267<sup>12345</sup> mod 76079 = 60349</span></p>
+            <p class="wrapper mt"><span class="math">Z<sub>BA</sub> = (Y<sub>A</sub>)<sup>X<sub>B</sub></sup> mod p = 62349<sup>54321</sup> mod 76079 = 60349</span></p>
+            <p class="text mt">Ключ:<b>60349</b></p>
+            <p class="text mt" style="line-height: 30px; text-indent: 72px;">Для аффинного шифра необходимо использовать два целых числа <strong>a</strong> и <strong>b</strong>, таких что <span class="math">0 ≤ a, b &#60; m</span>, где m — количество символов алфавита (32), причем <strong>a</strong> и <strong>m</strong> должны быть взаимно простыми.</p>
+            <p class="text mt">Пусть <span class="math">a = 7</span>, (НОД(7, 32) = 1)</p>
+            <p class="text mt">Пусть <span class="math">b = 60349</span></p>
+            <p class="text mt">Получаем функцию преобразования <span class="math">E<sub>a, b</sub>(x) = (ax + b) mod m = (7x + 60349) mod 32</span></p>
+            <p class="text mt"><strong>Пример 1</strong></p>
+            <table class="t" style="margin-top: 10px;">
+                <tr>
+                    <td>Открытый текст</td>
+                    <td>Ч</td>
+                    <td>В</td>
+                    <td>А</td>
+                </tr>
+                <tr>
+                    <td>Индекс символа</td>
+                    <td>23</td>
+                    <td>2</td>
+                    <td>0</td>
+                </tr>
+                <tr>
+                    <td>E<sub>a, b</sub>(x)</td>
+                    <td>30</td>
+                    <td>11</td>
+                    <td>29</td>
+                </tr>
+                <tr>
+                    <td>Шифртекст</td>
+                    <td>Ю</td>
+                    <td>Л</td>
+                    <td>Э</td>
+                </tr>
+            </table>
+            <p class="text mt"><strong>Пример 2</strong></p>
+            <table class="t" style="margin-top: 10px;">
+                <tr>
+                    <td>Открытый текст</td>
+                    <td>Ч</td>
+                    <td>А</td>
+                    <td>П</td>
+                    <td>Л</td>
+                    <td>И</td>
+                    <td>Й</td>
+                    <td>В</td>
+                    <td>Л</td>
+                    <td>А</td>
+                    <td>Д</td>
+                    <td>И</td>
+                    <td>С</td>
+                    <td>Л</td>
+                    <td>А</td>
+                    <td>В</td>
+                    <td>А</td>
+                    <td>Л</td>
+                    <td>Е</td>
+                    <td>К</td>
+                    <td>С</td>
+                    <td>Е</td>
+                    <td>Е</td>
+                    <td>В</td>
+                    <td>И</td>
+                    <td>Ч</td>
+                </tr>
+                <tr>
+                    <td>Индекс символа</td>
+                    <td>23</td>
+                    <td>0</td>
+                    <td>15</td>
+                    <td>11</td>
+                    <td>8</td>
+                    <td>9</td>
+                    <td>2</td>
+                    <td>11</td>
+                    <td>0</td>
+                    <td>4</td>
+                    <td>8</td>
+                    <td>17</td>
+                    <td>11</td>
+                    <td>0</td>
+                    <td>2</td>
+                    <td>0</td>
+                    <td>11</td>
+                    <td>5</td>
+                    <td>10</td>
+                    <td>17</td>
+                    <td>5</td>
+                    <td>5</td>
+                    <td>2</td>
+                    <td>8</td>
+                    <td>23</td>
+                </tr>
+                <tr>
+                    <td>E<sub>a, b</sub>(x)</td>
+                    <td>30</td>
+                    <td>29</td>
+                    <td>6</td>
+                    <td>10</td>
+                    <td>21</td>
+                    <td>28</td>
+                    <td>11</td>
+                    <td>10</td>
+                    <td>29</td>
+                    <td>25</td>
+                    <td>21</td>
+                    <td>20</td>
+                    <td>10</td>
+                    <td>29</td>
+                    <td>11</td>
+                    <td>29</td>
+                    <td>10</td>
+                    <td>0</td>
+                    <td>3</td>
+                    <td>20</td>
+                    <td>0</td>
+                    <td>0</td>
+                    <td>11</td>
+                    <td>21</td>
+                    <td>30</td>
+                </tr>
+                <tr>
+                    <td>Шифртекст</td>
+                    <td>Ю</td>
+                    <td>Э</td>
+                    <td>Ж</td>
+                    <td>К</td>
+                    <td>Х</td>
+                    <td>Ь</td>
+                    <td>Л</td>
+                    <td>К</td>
+                    <td>Э</td>
+                    <td>Щ</td>
+                    <td>Х</td>
+                    <td>Ф</td>
+                    <td>К</td>
+                    <td>Э</td>
+                    <td>Л</td>
+                    <td>Э</td>
+                    <td>К</td>
+                    <td>А</td>
+                    <td>Г</td>
+                    <td>Ф</td>
+                    <td>А</td>
+                    <td>А</td>
+                    <td>Л</td>
+                    <td>Х</td>
+                    <td>Ф</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+<script>
+    var sequence = [];
+    const edges = [1040, 1071];
+    let lang = [];
+    for (let i = edges[0]; i <= edges[1]; i++) {
+        lang.push(String.fromCharCode(i));
+    }
+
+    const convertKey = phrase => phrase.split("").filter(item => lang.includes(item)).reduce((key, item) => key.includes(item) ? key : [...key, item], []).join("");
+
+    const validateText = text => {
+        const arr = [...lang, " "];
+        return text.toUpperCase().split("").filter(item => arr.includes(item)).join("");
+    }
+
+    updateTable = (key, index) => {
+        const cezarTable = document.getElementById("cezarTable");
+        let rest = lang.filter(item => !key.includes(item));
+        const part_1 = key.slice(0, lang.length - index);
+        const part_2 = key.slice(lang.length - index);
+        const after = rest.splice(0, lang.length - key.length - index);
+        sequence = [...part_2.split(""), ...rest, ...part_1.split(""), ...after];
+        cezarTable.children[2].replaceChildren(...sequence.map(item => {
+            const td = document.createElement("td");
+            td.innerText = item;
+            return td;
+        }));
+    }
+
+    addEventListener("load", () => {
+        const items = document.querySelectorAll(".item");
+        for (let i = 0; i < items.length; i++) {
+            const xD = items[i].querySelector(".xD");
+            const title = items[i].querySelector(".title");
+            title.addEventListener("click", () => {
+                xD.click();
+            });
+            const div = items[i].querySelector(".xD + div");
+            xD.addEventListener("change", e => {
+                div.style.maxHeight = `${e.target.checked ? div.scrollHeight : 0}px`;
+                div.style.paddingTop = `${e.target.checked ? 8 : 0}px`;
+                div.style.paddingBottom = `${e.target.checked ? 8 : 0}px`;
+                if (e.target.checked) {
+                    title.classList.add("active");
+                } else {
+                    title.classList.remove("active")
+                }
+            });
+        }
+        const encrypted = document.getElementById("encrypted");
+        const unencrypted = document.getElementById("unencrypted");
+        const modeLablel = document.querySelector(".mode");
+        document.getElementById("mode").addEventListener("change", e => {
+            modeLablel.innerText = e.target.checked ? "Расшифровка" : "Шифровка";
+            if (e.target.checked) {
+                encrypted.classList.add("enabled");
+                encrypted.disabled = false;
+                unencrypted.classList.remove("enabled");
+                unencrypted.disabled = true;
+            } else {
+                encrypted.classList.remove("enabled");
+                encrypted.disabled = true;
+                unencrypted.classList.add("enabled");
+                unencrypted.disabled = false;
+            }
+        });
+        encrypted.addEventListener("input", e => {
+            e.target.value = validateText(e.target.value);
+        });
+        unencrypted.addEventListener("input", e => {
+            e.target.value = validateText(e.target.value);
+        });
+        const tr_1 = document.createElement("tr");
+        const tr_2 = document.createElement("tr");
+        const tr_3 = document.createElement("tr");
+        for (let i = 0; i < 32; i++) {
+            const td_1 = document.createElement("td");
+            const td_2 = document.createElement("td");
+            td_1.innerText = i;
+            td_2.innerText = lang[i];
+            tr_1.append(td_1);
+            tr_2.append(td_2);
+        }
+        const keyInput = document.getElementById("keyInput");
+        const posInput = document.getElementById("posInput");
+        const updateKey = text => {
+            keyInput.value = convertKey(text.toUpperCase());
+        }
+        posInput.addEventListener("input", e => {
+            if (!e.target.value.length) {
+                posInput.value = 0;
+                return;
+            }
+            const n = parseInt(e.target.value.split("").filter(item => !isNaN(parseInt(item))).join(""));
+            posInput.value = Math.min(lang.length - 1, n);
+        });
+        document.getElementById("execButton").addEventListener("click", () => {
+            updateTable(keyInput.value, posInput.value);
+            if (document.getElementById("mode").checked) {
+                unencrypted.value = encrypted.value.split("").map(item => item != " " ? lang[sequence.indexOf(item)] : " ").join("");
+            }
+            else {
+                encrypted.value = unencrypted.value.split("").map(item => item != " " ? sequence[lang.indexOf(item)] : " ").join("");
+            }
+        });
+        document.getElementById("phraseInput").addEventListener("input", e => updateKey(e.target.value));
+        document.getElementById("cezarTable").append(tr_1, tr_2, tr_3);
+        updateKey(document.getElementById("phraseInput").value);
+        document.getElementById("execButton").click();
+    });
+</script>
+</html>
