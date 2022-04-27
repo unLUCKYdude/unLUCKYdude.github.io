@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>ИЗ #2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "Noto Sans";
+        }
+        body {
+            background-color: #d2dae2;
+            padding: 72px 24px 72px 72px;
+        }
+        body::-webkit-scrollbar {
+            width: 8px;
+        }
+        body::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background-color: #485460;
+        }
+        .item {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .item + .item {
+            margin-top: 36px;
+        }
+        .item > div {
+            transition: 0.3s;
+            overflow: hidden;
+            max-height: 0;
+            border-left: 4px solid #485460;
+            padding-left: 36px;
+            margin-left: 16px;
+        }
+        .text {
+            font-size: 18px;
+            color: #1e272e;
+        }
+        .xD {
+            display: none;
+        }
+        .title {
+            font-size: 36px;
+            font-weight: bold;
+            color: #1e272e;
+            cursor: pointer;
+            margin-bottom: 24px;
+            margin-left: 48px;
+            user-select: none;
+        }
+        .title::before {
+            content: url("https://unpkg.com/ionicons@5.5.2/dist/svg/chevron-down-outline.svg");
+            width: 36px;
+            height: 36px;
+            position: absolute;
+            transition: 0.3s;
+            transform: translate(-48px, 8px);
+        }
+        .input {
+            width: 400px;
+            padding: 8px 16px;
+            background-color: #485460;
+            border-radius: 12px;
+            outline: none;
+            border: none;
+            text-align: center;
+            color: #ffffff;
+            font-size: 16px;
+            text-transform: uppercase;
+            box-sizing: border-box;
+            border: 4px solid transparent;
+            transition: 0.3s;
+        }
+        .input::placeholder {
+            color: #d2dae2;
+        }
+        button {
+            outline: none;
+            border: none;
+            box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+            width: 180px;
+            height: 60px;
+            font-weight: bold;
+            font-size: 22px;
+            color: #1e272e;
+            line-height: 60px;
+            text-align: center;
+            border-radius: 24px;
+            margin-left: 100px;
+            margin-right: 48px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        button:hover {
+            background-color: #d2dae2;
+        }
+        button:active {
+            box-shadow: none;
+            background-color: #485460;
+            color: #ffffff;
+        }
+        .mt {
+            margin-top: 24px;
+        }
+        .wrapper {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            color: #1e272e;
+        }
+    </style>
+</head>
+<body>
+    <div class="item">
+        <p class="title">взлом RSA (шаг младенца-великана)</p>
+        <input type="checkbox" class="xD">
+        <div id="rsaWrapper">
+            <div style="display: flex; justify-content: flex-start; align-items: center;">
+                <input type="text" class="input" placeholder="Шифртекст" id="textInput">
+                <button id="goButton">Погнали</button>
+            </div>
+            <div style="display: flex; justify-content: flex-start; align-items: center;" class="mt">
+                <input type="text" class="input" placeholder="p" style="margin-right: 24px;" id="pInput">
+                <input type="text" class="input" placeholder="q" id="qInput">
+            </div>
+            <div id="solutionBody" class="mt"></div>
+        </div>
+    </div>
+</body>
+<script>
+    const gcd = (a, b) => {
+        while (b != 0) {
+            const r = a % b;
+            a = b;
+            b = r;
+        }
+        return a;
+    };
+
+    const magic = (n, power, p) => {
+        if (power == 0) return 1 % p;
+        let res = n;
+        for (let i = 0; i < power - 1; i++) {
+            res = (res * n) % p;
+        }
+        return res;
+    };
+
+    const isPrime = n => {
+        if (n <= 1) return false;
+        if (n % 2 == 0 && n > 2) return false;
+        const s = Math.sqrt(n);
+        for(let i = 3; i <= s; i += 2) {
+            if(n % i == 0) return false;
+        }
+        return true;
+    }
+
+    const buildSolution = (p, q, m) => {
+        if (!m.length) {
+            alert("Шифровать нечего");
+            return;
+        }
+        if (!isPrime(p) || !isPrime(q)) {
+            alert("Не все введённые числа являются простыми");
+            return;
+        }
+        for (let i = 0; i < m.length; i++) {
+            if (m[i].charCodeAt() > p * q) {
+                alert("Слишком маленькие числа");
+                return;
+            }
+        }
+        const solutionBody = document.getElementById("solutionBody");
+
+        const phi_number = (p - 1) * (q - 1);
+        let e_number;
+        for (let i = 3; i < phi_number; i++) {
+            if (isPrime(i) && gcd(i, phi_number) == 1) {
+                e_number = i;
+                break;
+            }
+        }
+        if (!e_number) {
+            alert("Слишком маленькие числа");
+            return;
+        }
+        let d_number;
+        for (let i = e_number + 1; true; i++) {
+            if ((i * e_number) % phi_number == 1) {
+                d_number = i;
+                break;
+            }
+        }
+        const msgArr = m.split("").map(item => item.charCodeAt());
+        const enc_msgArray = msgArr.map(item => magic(item, e_number, p * q));
+        const dec_msgArray = enc_msgArray.map(item => magic(item, d_number, p * q));
+
+        const items = [
+            `Модуль n: p * q = ${p * q}`,
+            `Значение функции Эйлера φ: (p - 1) * (q - 1) = ${phi_number}`,
+            `Число е (простое; меньше φ; взаимно простое с φ): ${e_number}`,
+            `Число d (обратное е по модулю φ): ${d_number}`,
+            `Исходное сообщение: ${m}`,
+            `Разбиение сообщения на символы: ${m.split("").join(", ")}`,
+            `Преобразование символов в числа (utf-8): ${msgArr.join(", ")}`,
+            `Шифрование чисел (число ^ е mod n): ${enc_msgArray.join(", ")}`,
+            `ПРОВЕРКА. Расшифровка чисел (число ^ d mod n): ${dec_msgArray.join(", ")} -> ${dec_msgArray.map(item => String.fromCharCode(item)).join(", ")}`
+        ];
+
+        const _m = Math.ceil(Math.sqrt(p * q) * 1.02), _k = Math.floor(Math.sqrt(p * q) * 0.98);
+        const wrapper = document.createElement("div");
+        const h2 = document.createElement("h2");
+        const xD = document.createElement("span");
+        xD.innerText = `Произошла утечка данных, и я узнал, что первый символ это "${m.split("")[0]}" (его код ${msgArr[0]}).`;
+        const desc = document.createElement("p");
+        desc.style.marginTop = "16px";
+        desc.innerText = `Возьмём произвольные m и k, такие что m * k > n\nПусть будут m = ${_m} и k = ${_k}`;
+        const rows = document.createElement("p");
+        rows.style.marginTop = "16px";
+
+        const res = calcRows(enc_msgArray[0], dec_msgArray[0], p * q, _m, _k);
+        if (!res) {
+            alert("Что-то пошло не так...");
+            return;
+        }
+        rows.innerText = `Начинаем считать ряды:\n1) ${res.row_1.join(", ")}\n2) ${res.row_2.join(", ")}... иии, дальше можно не считать`;
+        const answer = document.createElement("p");
+        answer.innerText = `Значит, х = i * m - j = ${res.i} * ${_m} - ${res.j} = ${res.i * _m - res.j}\n${enc_msgArray[0]}^${res.i * _m - res.j} mod ${p * q} = ${dec_msgArray[0]}`;
+        answer.style.marginTop = "24px";
+
+        h2.style.marginTop = "36px";
+        h2.innerText = "Алгоритм Ш.М.Ш.В. для первого символа";
+        wrapper.append(h2, xD, desc, rows, answer);
+
+        solutionBody.replaceChildren(...items.map((item, index) => {
+            const el = document.createElement("p");
+            el.className = `wrapper${index > 0 ? " mt" : ""}`;
+            el.innerText = item;
+            return el;
+        }), wrapper);
+
+        setTimeout(() => {
+            document.getElementById("rsaWrapper").style.maxHeight = `${document.getElementById("rsaWrapper").scrollHeight}px`;
+        }, 500);
+    };
+
+    const calcRows = (a, y, p, m, k) => {
+        let row_1 = [], row_2 = [];
+        const y_mod_p = y % p;
+        for (let j = 0; j < m; j++) {
+            row_1[j] = (magic(a, j, p) * y_mod_p) % p;
+        }
+        for (let i = 1; i <= k; i++) {
+            row_2[i - 1] = magic(a, i * m, p);
+            const index = row_1.indexOf(row_2[i - 1]);
+            if (index != -1) {
+                return {row_1, row_2, i, j: index};
+            };
+        }
+        return null;
+    };
+
+    addEventListener("load", () => {
+        const items = document.querySelectorAll(".item");
+        for (let i = 0; i < items.length; i++) {
+            const xD = items[i].querySelector(".xD");
+            const title = items[i].querySelector(".title");
+            title.addEventListener("click", () => {
+                xD.click();
+            });
+            const div = items[i].querySelector(".xD + div");
+            xD.addEventListener("change", e => {
+                div.style.maxHeight = `${e.target.checked ? div.scrollHeight : 0}px`;
+                div.style.paddingTop = `${e.target.checked ? 8 : 0}px`;
+                div.style.paddingBottom = `${e.target.checked ? 8 : 0}px`;
+                if (e.target.checked) {
+                    title.classList.add("active");
+                } else {
+                    title.classList.remove("active");
+                }
+            });
+        }
+
+        document.getElementById("goButton").addEventListener("click", () => {
+            buildSolution(document.getElementById("pInput").value, document.getElementById("qInput").value, document.getElementById("textInput").value);
+        });
+    });
+</script>
+</html>
